@@ -2,8 +2,6 @@
 #
 # Initialization
 #
-mainmenu
-
 PulseAudio () {
     sudo pacman -S mpd --noconfirm
     mkdir ~/.config/mpd
@@ -50,3 +48,5 @@ mainmenu () {
         mainmenu
     fi
 }
+
+mainmenu
