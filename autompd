@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# Initialization
+#
+mainmenu () {
+    echo "Press 1 for Pulse Audio"
+    echo "Press 2 for ATLA Audio"
+    read -r -n 1 -p "Input Selection:" mainmenuinput
+    if [ "$mainmenuinput" = "1" ]; then
+        PulseAudio
+    elif [ "$mainmenuinput" = "2" ]; then
+        ALSAAudio
+    else
+        echo "You have entered an invalid selection!"
+        echo "Please try again!"
+        echo ""
+        echo "Press any key to continue..."
+        read -r -n 1
+        clear
+        mainmenu
+    fi
+}
+
+mainmenu
+
+PulseAudio () {
+    sudo pacman -S mpd --noconfirm
+    mkdir ~/.config/mpd
+    cp /usr/share/doc/mpd/mpdconf.example ~/.config/mpd/mpd.conf
+    echo -e "db_file \"~/.config/mpd/database\"\nlog_file \t\"syslog\"\nmusic_directory\t\"~/Music\"\nauto_update \"yes\"" >> ~/.config/mpd/mpd.conf
+    mkdir ~/.config/mpd/playlists
+    mpd
+    mpc update
+    echo -e "audio_output {\n\ttype\t\"pulse\"\n\tname\t\"pulse audio\"\n}" >> ~/.config/mpd/mpd.conf
+    sudo systemctl enable mpd.service --user
+    sudo systemctl start mpd.service --user
+    sudo pacman -S ncmpcpp --noconfirm
+}
+
+ALSAAudio () {
+    sudo pacman -S mpd --noconfirm
+    mkdir ~/.config/mpd
+    cp /usr/share/doc/mpd/mpdconf.example ~/.config/mpd/mpd.conf
+    echo -e "db_file \"~/.config/mpd/database\"\nlog_file \t\"syslog\"\nmusic_directory\t\"~/Music\"\nauto_update \"yes\"" >> ~/.config/mpd/mpd.conf
+    mkdir ~/.config/mpd/playlists
+    mpd
+    mpc update
+    echo -e "audio_output {\n\ttype\t\"alsa\"\n\tname\t\"alsa audio\"\n}" >> ~/.config/mpd/mpd.conf
+    sudo systemctl enable mpd.service --user
+    sudo systemctl start mpd.service --user
+    sudo pacman -S ncmpcpp --noconfirm
+}
