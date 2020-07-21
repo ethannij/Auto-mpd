@@ -32,7 +32,7 @@ ALSAAudio () {
 
 mainmenu () {
     echo "Press 1 for Pulse Audio"
-    echo "Press 2 for ATLA Audio"
+    echo "Press 2 for ALSA Audio"
     read -r -n 1 -p "Input Selection:" mainmenuinput
     if [ "$mainmenuinput" = "1" ]; then
         PulseAudio
